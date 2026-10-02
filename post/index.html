@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BevGolf</title>
+
+<!--
+  Interstitial for shared scorepost links from the BGA app.
+
+  Deliberately not a universal link: those need an apple-app-site-association
+  file here plus the associated-domains entitlement in the app, which means a
+  native build. This page works on static hosting today — it hands off to the
+  app's custom scheme, and falls back to the store if nothing takes it.
+
+  The cost is a brief flash of this page before the app opens. Moving to
+  universal links later removes that and needs no change here; this page simply
+  stops being reached on devices that have the app.
+
+  Link shape:  /post/?t=round&id=<uuid>      t = round | h2h | ace_race
+-->
+
+<meta property="og:title" content="A round on BevGolf">
+<meta property="og:description" content="Open this scorepost in the app.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0a0a0a; color: #fff;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 100vh; text-align: center; padding: 2rem; margin: 0;
+  }
+  .tagline { font-size: 0.95rem; color: #555; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 1rem; }
+  h1 { font-size: 2.5rem; font-weight: 600; letter-spacing: -0.5px; margin: 0 0 0.5rem; }
+  p { color: #888; font-size: 1.1rem; margin: 0 0 2rem; }
+  .btn {
+    display: inline-block; padding: 0.85rem 1.75rem; border-radius: 9999px;
+    background: #25756c; color: #fff; text-decoration: none; font-weight: 600;
+    border: none; margin-bottom: 1.25rem;
+  }
+  .btn:hover { background: #2d8c81; }
+  a.alt { color: #888; font-size: 0.9rem; text-decoration: none; border-bottom: 1px solid #333; padding-bottom: 2px; }
+  a.alt:hover { color: #fff; border-color: #fff; }
+</style>
+</head>
+<body>
+  <div class="tagline">Opening Round</div>
+  <h1>BevGolf</h1>
+  <p id="msg">Taking you to the app…</p>
+  <a class="btn" id="open" href="#">Open in BevGolf</a>
+  <a class="alt" id="store" href="https://apps.apple.com/app/id6790543535">Don't have the app? Get it here</a>
+
+<script>
+(function () {
+  var APP_STORE = 'https://apps.apple.com/app/id6790543535';
+  // No Play listing yet, so Android falls back to the site rather than a dead link.
+  var PLAY_STORE = 'https://bevgolf.app';
+
+  var q = new URLSearchParams(location.search);
+  var type = q.get('t') || 'round';
+  var id = q.get('id') || '';
+
+  if (!/^(round|h2h|ace_race)$/.test(type) || !/^[0-9a-fA-F-]{36}$/.test(id)) {
+    document.getElementById('msg').textContent = 'That link looks incomplete.';
+    document.getElementById('open').style.display = 'none';
+    return;
+  }
+
+  var deepLink = 'bgaapp://post/' + type + '/' + id;
+  var store = /Android/i.test(navigator.userAgent) ? PLAY_STORE : APP_STORE;
+
+  document.getElementById('open').href = deepLink;
+  document.getElementById('store').href = store;
+
+  // If the app takes over, this page is backgrounded — that's the signal to
+  // cancel the store redirect. Without it, someone who *does* have the app
+  // returns from BevGolf to find the browser parked on an App Store page.
+  var left = false;
+  document.addEventListener('visibilitychange', function () { if (document.hidden) left = true; });
+  window.addEventListener('pagehide', function () { left = true; });
+
+  location.href = deepLink;
+  setTimeout(function () { if (!left) location.replace(store); }, 1400);
+})();
+</script>
+</body>
+</html>
