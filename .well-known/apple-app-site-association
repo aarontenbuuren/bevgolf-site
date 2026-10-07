@@ -1,0 +1,13 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["L5XCET2AKS.com.bga.app"],
+        "components": [
+          { "/": "/post/*", "comment": "shared scoreposts" },
+          { "/": "/i/*",    "comment": "invite links" }
+        ]
+      }
+    ]
+  }
+}

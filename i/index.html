@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BevGolf Invite</title>
+
+<!--
+  Interstitial for invite links from the BGA app.
+
+  Same shape as /post/: hands off to the app's custom scheme and falls back to
+  the store, because universal links need an apple-app-site-association file
+  here plus the associated-domains entitlement, which means a native build.
+
+  One difference that matters. A shared post is only interesting to someone who
+  already has the app, so that page is a pass-through. An invite is aimed at
+  someone who almost certainly does *not*, so the store is the expected
+  destination rather than the fallback — and the page says what they get for
+  going there before it sends them anywhere.
+
+  Link shape:  /i/?c=<code>     code = 7 chars, A-Z2-9
+-->
+
+<meta property="og:title" content="You've been invited to BevGolf">
+<meta property="og:description" content="Join and you'll both get 500 Tabs. Scorecards, head-to-heads and the Ace Race. Golf, with a drink in hand.">
+<meta property="og:site_name" content="BevGolf">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0a0a0a; color: #fff;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 100vh; text-align: center; padding: 2rem; margin: 0;
+  }
+  .tagline { font-size: 0.95rem; color: #555; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 1rem; }
+  h1 { font-size: 2.5rem; font-weight: 600; letter-spacing: -0.5px; margin: 0 0 0.5rem; }
+  p { color: #888; font-size: 1.1rem; margin: 0 0 1.5rem; }
+  .bonus {
+    display: inline-block; margin: 0 0 2rem; padding: 0.6rem 1.2rem;
+    border: 1px solid #25756c; border-radius: 9999px;
+    color: #5fb9af; font-weight: 600; font-size: 0.95rem;
+  }
+  .btn {
+    display: inline-block; padding: 0.85rem 1.75rem; border-radius: 9999px;
+    background: #25756c; color: #fff; text-decoration: none; font-weight: 600;
+    border: none; margin-bottom: 1.25rem;
+  }
+  .btn:hover { background: #2d8c81; }
+  a.alt { color: #888; font-size: 0.9rem; text-decoration: none; border-bottom: 1px solid #333; padding-bottom: 2px; }
+  a.alt:hover { color: #fff; border-color: #fff; }
+  .code { color: #555; font-size: 0.8rem; letter-spacing: 2px; margin-top: 1.5rem; }
+</style>
+</head>
+<body>
+  <div class="tagline">You're Invited</div>
+  <h1>BevGolf</h1>
+  <p id="msg">Pour. Par. Repeat.</p>
+  <div class="bonus">You'll both get 500 Tabs</div>
+  <a class="btn" id="store" href="https://apps.apple.com/app/id6790543535">Get the App</a>
+  <a class="alt" id="open" href="#">Already have it? Open BevGolf</a>
+  <div class="code" id="code"></div>
+
+<script>
+(function () {
+  var APP_STORE = 'https://apps.apple.com/app/id6790543535';
+  // No Play listing yet, so Android falls back to the site rather than a dead link.
+  var PLAY_STORE = 'https://bevgolf.app';
+
+  var code = (new URLSearchParams(location.search).get('c') || '').toUpperCase();
+
+  if (!/^[A-Z0-9]{4,16}$/.test(code)) {
+    document.getElementById('msg').textContent = 'That invite link looks incomplete.';
+    document.getElementById('open').style.display = 'none';
+    return;
+  }
+
+  var deepLink = 'bgaapp://invite/' + code;
+  var store = /Android/i.test(navigator.userAgent) ? PLAY_STORE : APP_STORE;
+
+  document.getElementById('open').href = deepLink;
+  document.getElementById('store').href = store;
+  // Shown so it can still be typed in by hand if every automatic route fails.
+  document.getElementById('code').textContent = 'CODE ' + code;
+
+  // Try the app first: someone who already has it should land straight in it,
+  // with the code captured. If nothing takes the scheme the page simply stays
+  // put — no automatic store redirect here, unlike /post/, because the visitor
+  // is probably new and deserves to read what they're being offered first.
+  location.href = deepLink;
+})();
+</script>
+</body>
+</html>
