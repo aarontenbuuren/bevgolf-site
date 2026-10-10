@@ -1,0 +1,8 @@
+# GitHub Pages builds this site with Jekyll, and Jekyll drops every dot-directory
+# from its output. That is why /.well-known/apple-app-site-association returned
+# 404 however correctly the file itself was written — it was never published.
+#
+# Universal links are only read from that exact path, so the directory has to be
+# named back in explicitly.
+include:
+  - ".well-known"
