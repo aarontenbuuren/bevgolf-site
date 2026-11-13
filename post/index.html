@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BevGolf</title>
+<title>Bev Golf</title>
 
 <!--
   Interstitial for shared scorepost links from the BGA app.
@@ -24,12 +24,12 @@
   Static copy: this page can't name the player or the score, because a crawler
   doesn't run the script below and static hosting can't vary a page per post.
   The share message carries those specifics, so the card's job is to earn the
-  tap and say what BevGolf is to anyone who doesn't have it yet. Per-post titles
+  tap and say what Bev Golf is to anyone who doesn't have it yet. Per-post titles
   and a scorecard image need a dynamic host.
 -->
-<meta property="og:title" content="See it on BevGolf">
+<meta property="og:title" content="See it on Bev Golf">
 <meta property="og:description" content="Scorecards, head-to-heads and the Ace Race. Golf, with a drink in hand.">
-<meta property="og:site_name" content="BevGolf">
+<meta property="og:site_name" content="Bev Golf">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
 
@@ -55,9 +55,9 @@
 </head>
 <body>
   <div class="tagline">Opening Round</div>
-  <h1>BevGolf</h1>
+  <h1>Bev Golf</h1>
   <p id="msg">Taking you to the app…</p>
-  <a class="btn" id="open" href="#">Open in BevGolf</a>
+  <a class="btn" id="open" href="#">Open in Bev Golf</a>
   <a class="alt" id="store" href="https://apps.apple.com/app/id6790543535">Don't have the app? Get it here</a>
 
 <script>
@@ -84,7 +84,7 @@
 
   // If the app takes over, this page is backgrounded — that's the signal to
   // cancel the store redirect. Without it, someone who *does* have the app
-  // returns from BevGolf to find the browser parked on an App Store page.
+  // returns from Bev Golf to find the browser parked on an App Store page.
   var left = false;
   document.addEventListener('visibilitychange', function () { if (document.hidden) left = true; });
   window.addEventListener('pagehide', function () { left = true; });
