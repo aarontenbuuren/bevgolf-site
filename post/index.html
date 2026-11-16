@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Bev Golf</title>
+<!-- Written by tools/link-previews/build.mjs in bga-app from _templates/post.html. Edit the template and run it again. -->
 
 <!--
   Interstitial for shared scorepost links from the BGA app.
@@ -26,11 +27,20 @@
   The share message carries those specifics, so the card's job is to earn the
   tap and say what Bev Golf is to anyone who doesn't have it yet. Per-post titles
   and a scorecard image need a dynamic host.
+
+  The picture can vary by course, though, because the course is in the path:
+  /post/maple-country-club/?t=…&id=… is a page of its own, with that course's
+  card as its preview image. /post/ itself, for older links and courses with no
+  page yet, has the Bev Golf icon.
 -->
 <meta property="og:title" content="See it on Bev Golf">
 <meta property="og:description" content="Scorecards, head-to-heads and the Ace Race. Golf, with a drink in hand.">
 <meta property="og:site_name" content="Bev Golf">
 <meta property="og:type" content="website">
+<meta property="og:image" content="https://bevgolf.app/assets/preview-bga.jpg">
+<meta property="og:image:width" content="600">
+<meta property="og:image:height" content="600">
+<meta property="og:image:alt" content="Bev Golf">
 <meta name="twitter:card" content="summary">
 
 <style>
